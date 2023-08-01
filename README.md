@@ -21,10 +21,16 @@ import { Store } from '@pansy/store';
 
 const store = new Store();
 
+// 基本方法
 store.setItem('foo', 'bar');
 store.setItem('abc', 'xyz');
 
-basil.getItem('foo'); // return bar
+store.getItem('foo'); // return bar
+
+store.removeItem('foo');
+
+// 高级方法
+store.check('local'); // 测试 localStorage 是否可用
 ```
 ## 🔨 高级使用
 
