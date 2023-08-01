@@ -5,19 +5,19 @@ import { Memory } from './storages/memory';
 import { defaultOptions } from './config';
 import { isValidKey, isString, extend, toStoredValue, fromStoredValue, tryEach } from './utils';
 
-import type { IOptions, IStorageOptions } from './types';
+import type { IOptions, IStorage, IStorages, IStorageKey } from './types';
 
 export class Store {
   private _opts: IOptions;
-  private _storages: Record<string, any>;
+  private _storages: Record<IStorageKey, IStorage>;
 
   constructor(opts: IOptions = {}) {
     this._opts = extend({}, defaultOptions, opts);
     this._storages = {
-      local: new Local(this._opts),
-      memory: new Memory(this._opts),
-      cookie: new Cookie(this._opts),
-      session: new Session(this._opts),
+      local: new Local(),
+      memory: new Memory(),
+      cookie: new Cookie(),
+      session: new Session(),
     };
   }
 
@@ -29,7 +29,7 @@ export class Store {
     return this._storages.hasOwnProperty(storage);
   }
 
-  check(storage: string): boolean {
+  check(storage: IStorageKey): boolean {
     if (this.support(storage)) {
       return this._storages[storage].check(this._opts)
     };
@@ -75,7 +75,7 @@ export class Store {
 
     tryEach(
       this._toStoragesArray(opts.storages),
-      (storage: any) => {
+      (storage: IStorageKey) => {
         this._storages[storage].setItem(key, value, options);
 
         where = storage;
@@ -92,9 +92,9 @@ export class Store {
 
     tryEach(
       this._toStoragesArray(opts.storages),
-      (storage: any) => {
+      (storage: IStorageKey) => {
         if (storage !== where) {
-          this._storages[storage].remove(key);
+          this._storages[storage].removeItem(key);
         }
       },
       null,
@@ -111,7 +111,7 @@ export class Store {
 
     tryEach(
       this._toStoragesArray(opts.storages),
-      (storage: any) => {
+      (storage: IStorageKey) => {
         this._storages[storage].removeItem(key);
       },
       null,
@@ -119,7 +119,7 @@ export class Store {
     );
   }
 
-  _toStoragesArray(storages: IStorageOptions['storages']) {
+  _toStoragesArray(storages: IStorages) {
     if (Array.isArray(storages))
       return storages;
     return isString(storages) ? [storages] : [];
@@ -130,7 +130,6 @@ export class Store {
     if (isValidKey(path)) {
       key += path;
     } else if (Array.isArray(path)) {
-      // path = Basil.utils.isFunction(path.filter) ? path.filter(isValidKey) : path;
       key = path.join(delimiter);
     }
     return key && isValidKey(namespace) ? namespace + delimiter + key : key;

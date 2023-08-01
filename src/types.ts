@@ -2,6 +2,10 @@ export type IEngine = 'localStorage' | 'sessionStorage';
 
 export type ISameSite = 'strict' | 'lax' | 'none';
 
+export type IStorageKey = 'local' | 'cookie' | 'session' | 'memory';
+
+export type IStorages = IStorageKey[];
+
 export interface ICookieAttributes {
   /**
    * 定义过期时间
@@ -27,7 +31,7 @@ export interface ICookieAttributes {
 
 export interface IOptions extends ICookieAttributes {
   /**
-   * 命名空间，对存储数据进行命名空间处理
+   * 存储数据的命名空间
    * @default 'ps45ii'
    */
   namespace?: string,
@@ -36,17 +40,17 @@ export interface IOptions extends ICookieAttributes {
    * @default
    *   ['local', 'cookie', 'session', 'memory']
    */
-  storages?: ('local' | 'cookie' | 'session' | 'memory')[];
+  storages?: IStorages;
   /**
    * 用于分隔命名空间和键名的值
-   * @default '.'
+   * @default '/'
    */
   keyDelimiter?: string;
 }
 
-export interface IStorageOptions extends IOptions {}
+export type IEachCallback = (key: string, value: any) => void;
 
-export interface IStorage<O extends Record<string, any> = IStorageOptions> {
+export interface IStorage<O extends Record<string, any> = {}> {
   /**
    * 检查是否可用
    * @returns
@@ -81,7 +85,7 @@ export interface IStorage<O extends Record<string, any> = IStorageOptions> {
    * @param callback 回调函数
    * @returns
    */
-  each: (callback: (key: any, value: any) => void) => void;
+  each: (callback: IEachCallback) => void;
 
   /**
    * 清空指定命名空间的存储数据，不提供命令空间则清空所有数据

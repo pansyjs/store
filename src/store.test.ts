@@ -2,14 +2,14 @@ import { Store } from './store';
 
 import { describe, expect, it } from 'vitest';
 
-const data = {
+const data: Record<string, any> = {
   str: 'hello world',
   nb: 42,
   obj: { foo: 'bar', baz: 'quux' },
   arr: ['foo', 42, 'bar']
 };
 
-const alt = {
+const alt: Record<string, any> = {
   str: 'foobar',
   nb: -1,
   obj: { hello: 'world', foo: 'bar' },

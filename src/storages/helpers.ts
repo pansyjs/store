@@ -1,17 +1,13 @@
 import { storageTestKey } from '../config';
 
-import type { IStorage, IEngine, IStorageOptions } from '../types';
+import type { IStorage, IEngine, IEachCallback } from '../types';
 
 export class WebStorage implements IStorage {
-  private _opts: IStorageOptions;
   private _engine: IEngine;
   private _isSupport: boolean | null = null;
 
-  constructor(engine: IEngine = 'localStorage', opts?: IStorageOptions) {
-    this._opts = opts || {};
+  constructor(engine: IEngine = 'localStorage') {
     this._engine = engine;
-
-    console.log(this._opts);
   }
 
   _check() {
@@ -41,7 +37,8 @@ export class WebStorage implements IStorage {
     return false;
   }
 
-  setItem(key: string, value: any) {
+  setItem(key: string, value: string) {
+    if (!this.check()) return;
     if (!key) {
       throw Error('invalid key');
     }
@@ -49,21 +46,27 @@ export class WebStorage implements IStorage {
   }
 
   getItem(key: string) {
+    if (!this.check()) return null;
     return window[this._engine].getItem(key);
   }
 
   removeItem(key: string) {
+    if (!this.check()) return;
     window[this._engine].removeItem(key);
   }
 
-  each(callback: any) {
+  each(callback: IEachCallback) {
     for (let i = 0, key; i < window[this._engine].length; i++) {
       key = window[this._engine].key(i) as string;
       callback(key, this.getItem(key));
     }
   }
 
-  clear() {
-    window[this._engine].clear();
+  clear(namespace?: string) {
+    this.each((key: string) => {
+      if (!namespace || key.startsWith(namespace)) {
+        this.removeItem(key);
+      }
+    })
   }
 }

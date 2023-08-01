@@ -1,12 +1,7 @@
-import type { IStorage, IStorageOptions } from '../types';
+import type { IStorage, IEachCallback } from '../types';
 
 export class Memory implements IStorage {
-  private _opts: IStorageOptions;
   private _hash: Record<string, any> = {};
-
-  constructor(opts: IStorageOptions) {
-    this._opts = opts
-  }
 
   check() {
     return true
@@ -27,20 +22,17 @@ export class Memory implements IStorage {
     delete this._hash[key];
   }
 
-  each(callback: any) {
-    if (!callback) return;
+  each(callback: IEachCallback) {
     for (const key in this._hash) {
-      callback(key, this.getItem(key));
+      callback?.(key, this.getItem(key));
     }
   };
 
-  clear() {
-    const namespace = this._opts.namespace || '';
-
-    for (const key in this._hash) {
-      if (!namespace || key.indexOf(namespace) === 0) {
+  clear(namespace?: string) {
+    this.each((key: string) => {
+      if (!namespace || key.startsWith(namespace)) {
         this.removeItem(key);
       }
-    }
+    })
   }
 }
