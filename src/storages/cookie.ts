@@ -1,3 +1,6 @@
+import { storageTestKey } from '../config';
+import { extend } from '../utils';
+
 import type { IStorage, IStorageOptions } from '../types';
 
 export class Cookie implements IStorage<IStorageOptions> {
@@ -8,6 +11,8 @@ export class Cookie implements IStorage<IStorageOptions> {
   }
 
   check(options?: IStorageOptions) {
+    const opts = extend({}, this._opts, options);
+
     if (!navigator.cookieEnabled) {
       return false;
     }
@@ -18,11 +23,11 @@ export class Cookie implements IStorage<IStorageOptions> {
       return document.cookie.indexOf(cookie) !== -1;
     }
 
-    if (options && options.secure) {
+    if (opts && opts.secure) {
       try {
-        this.setItem(this._opts._salt, this._opts._salt, options);
-        const hasSecurelyPersited = this.getItem(this._opts._salt) === this._opts._salt;
-        this.removeItem(this._opts._salt);
+        this.setItem(storageTestKey, storageTestKey, options);
+        const hasSecurelyPersited = this.getItem(storageTestKey) === storageTestKey;
+        this.removeItem(storageTestKey);
         return hasSecurelyPersited;
       } catch (error) {
         return false;
@@ -31,7 +36,7 @@ export class Cookie implements IStorage<IStorageOptions> {
     return true;
   }
 
-  setItem(key, value, options?: any) {
+  setItem(key: string, value: any, options?: any) {
     if (!this.check()) {
       throw Error('cookies are disabled');
     }
@@ -45,10 +50,12 @@ export class Cookie implements IStorage<IStorageOptions> {
     let cookie = encodeURIComponent(key) + '=' + encodeURIComponent(value);
 
     // handle expiration days
-    if (options.expireDays) {
-      const date = new Date();
-      date.setTime(date.getTime() + (options.expireDays * 864e5));
-      cookie += '; expires=' + date.toUTCString();
+    if (typeof options.expires === 'number') {
+      options.expires = new Date(Date.now() + options.expires * 864e5)
+    }
+    if (options.expires) {
+      options.expires = options.expires.toUTCString();
+      cookie += '; expires=' + options.expires;
     }
 
     // handle domain
@@ -76,7 +83,7 @@ export class Cookie implements IStorage<IStorageOptions> {
     document.cookie = cookie + '; path=/';
   }
 
-  getItem(key) {
+  getItem(key: string) {
     if (!this.check()) {
       throw Error('cookies are disabled')
     }
@@ -94,7 +101,7 @@ export class Cookie implements IStorage<IStorageOptions> {
     return null;
   }
 
-  removeItem(key) {
+  removeItem(key: string) {
     this.setItem(key, '', { expireDays: -1 });
 
     const domain = window.location.host;
@@ -107,7 +114,7 @@ export class Cookie implements IStorage<IStorageOptions> {
     }
   }
 
-  each(callback) {
+  each(callback: (key: string, val: any) => void) {
     const cookies = document.cookie.split(/; ?/g);
 
     for (let i = cookies.length - 1; i >= 0; i--) {
@@ -121,7 +128,7 @@ export class Cookie implements IStorage<IStorageOptions> {
     }
   }
 
-  clear(namespace) {
+  clear() {
     this.each(() => {
 
     })

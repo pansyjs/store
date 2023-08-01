@@ -8,10 +8,7 @@ describe('Local', () => {
   })
 
   it('basic', () => {
-    const local = new Local({
-      ...defaultOptions,
-      _salt: 'test',
-    });
+    const local = new Local(defaultOptions);
 
     // set
     local.setItem('foo', 'bar');

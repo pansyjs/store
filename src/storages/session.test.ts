@@ -8,10 +8,7 @@ describe('Session', () => {
   })
 
   it('basic', () => {
-    const session = new Session({
-      ...defaultOptions,
-      _salt: 'test',
-    });
+    const session = new Session(defaultOptions);
 
     // set
     session.setItem('foo', 'bar');

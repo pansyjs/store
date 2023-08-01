@@ -2,12 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { Cookie } from './cookie';
 import { defaultOptions } from '../config'
 
-describe('Local', () => {
+describe('Cookie', () => {
   it('basic', () => {
-    const cookie = new Cookie({
-      ...defaultOptions,
-      _salt: 'test',
-    });
+    const cookie = new Cookie(defaultOptions);
 
     // set
     cookie.setItem('foo', 'bar');
@@ -19,7 +16,7 @@ describe('Local', () => {
 
     // remove
     cookie.removeItem('foo');
-    expect(cookie.getItem('foo')).toBe(null);
+    expect(cookie.getItem('foo')).toBe('');
     expect(cookie.getItem('foo1')).toBe('bar1');
   })
 })

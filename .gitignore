@@ -2,3 +2,5 @@
 .DS_Store
 dist
 node_modules
+
+src/version.ts
