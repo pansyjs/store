@@ -9,6 +9,8 @@
   "scripts": {
     "build": "tsup",
     "test": "vitest ./src/store.test.ts",
+    "release:dry": "release-it --dry-run --no-npm",
+    "release": "release-it",
     "typecheck": "tsc --noEmit"
   },
   "files": [
