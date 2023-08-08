@@ -1,6 +1,6 @@
 {
   "name": "@pansy/store",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "前端存储解决方案",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
