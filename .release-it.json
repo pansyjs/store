@@ -1,0 +1,24 @@
+{
+  "git": {
+    "commitMessage": "chore(release): v${version}",
+    "push": true,
+    "commit": true,
+    "tag": true,
+    "requireCommits": false,
+    "requireCleanWorkingDir": false
+  },
+  "npm": {
+    "publish": true
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md",
+      "header": "# Changelog"
+    }
+  },
+  "github": {
+    "release": true,
+    "draft": true
+  }
+}
