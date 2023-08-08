@@ -1,7 +1,7 @@
 {
   "name": "@pansy/store",
   "version": "1.0.0",
-  "description": "",
+  "description": "前端存储解决方案",
   "main": "dist/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
@@ -26,7 +26,12 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "@commitlint/cli": "^17.6.7",
+    "@commitlint/config-conventional": "^17.6.7",
+    "@release-it/conventional-changelog": "^7.0.0",
+    "husky": "^8.0.3",
     "jsdom": "^22.1.0",
+    "release-it": "^16.1.3",
     "tsup": "^7.1.0",
     "typescript": "^5.1.6",
     "vitest": "^0.33.0",
