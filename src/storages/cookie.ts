@@ -1,9 +1,9 @@
 import { storageTestKey } from '../config';
 
-import type { IStorage, ICookieAttributes, IEachCallback } from '../types';
+import type { Storage, CookieAttributes, EachCallback } from '../types';
 
-export class Cookie implements IStorage<ICookieAttributes> {
-  check(opts = {} as ICookieAttributes) {
+export class Cookie implements Storage<CookieAttributes> {
+  check(opts = {} as CookieAttributes) {
     if (!navigator.cookieEnabled) {
       return false;
     }
@@ -27,7 +27,7 @@ export class Cookie implements IStorage<ICookieAttributes> {
     return true;
   }
 
-  setItem(key: string, value: any, opts = {} as ICookieAttributes) {
+  setItem(key: string, value: any, opts = {} as CookieAttributes) {
     if (!this.check()) {
       throw Error('cookies are disabled');
     }
@@ -104,7 +104,7 @@ export class Cookie implements IStorage<ICookieAttributes> {
     }
   }
 
-  each(callback: IEachCallback) {
+  each(callback: EachCallback) {
     const cookies = document.cookie.split(/; ?/g);
 
     for (let i = cookies.length - 1; i >= 0; i--) {

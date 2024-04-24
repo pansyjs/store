@@ -1,12 +1,12 @@
-export type IEngine = 'localStorage' | 'sessionStorage';
+export type Engine = 'localStorage' | 'sessionStorage';
 
-export type ISameSite = 'strict' | 'lax' | 'none';
+export type SameSite = 'strict' | 'lax' | 'none';
 
-export type IStorageKey = 'local' | 'cookie' | 'session' | 'memory';
+export type StorageKey = 'local' | 'cookie' | 'session' | 'memory';
 
-export type IStorages = IStorageKey[];
+export type Storages = StorageKey[];
 
-export interface ICookieAttributes {
+export interface CookieAttributes {
   /**
    * 定义过期时间
    */
@@ -26,10 +26,10 @@ export interface ICookieAttributes {
   /**
    * 断言一个 cookie 不应该被发送到跨域请求，提供一定的防止跨站请求伪造攻击（CSRF）的保护。
    */
-  sameSite?: ISameSite | undefined;
+  sameSite?: SameSite | undefined;
 }
 
-export interface IOptions extends ICookieAttributes {
+export interface Options extends CookieAttributes {
   /**
    * 存储数据的命名空间
    * @default 'ps45ii'
@@ -40,7 +40,7 @@ export interface IOptions extends ICookieAttributes {
    * @default
    *   ['local', 'cookie', 'session', 'memory']
    */
-  storages?: IStorages;
+  storages?: Storages;
   /**
    * 用于分隔命名空间和键名的值
    * @default '/'
@@ -48,9 +48,9 @@ export interface IOptions extends ICookieAttributes {
   keyDelimiter?: string;
 }
 
-export type IEachCallback = (key: string, value: any) => void;
+export type EachCallback = (key: string, value: any) => void;
 
-export interface IStorage<O extends Record<string, any> = {}> {
+export interface Storage<O extends Record<string, any> = {}> {
   /**
    * 检查是否可用
    * @returns
@@ -85,7 +85,7 @@ export interface IStorage<O extends Record<string, any> = {}> {
    * @param callback 回调函数
    * @returns
    */
-  each: (callback: IEachCallback) => void;
+  each: (callback: EachCallback) => void;
 
   /**
    * 清空指定命名空间的存储数据，不提供命令空间则清空所有数据

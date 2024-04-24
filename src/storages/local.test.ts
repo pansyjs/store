@@ -1,6 +1,5 @@
 import { describe, afterEach, expect, it } from 'vitest';
 import { Local } from './local';
-import { defaultOptions } from '../config'
 
 describe('Local', () => {
   afterEach(() => {
@@ -8,7 +7,7 @@ describe('Local', () => {
   })
 
   it('basic', () => {
-    const local = new Local(defaultOptions);
+    const local = new Local();
 
     // set
     local.setItem('foo', 'bar');

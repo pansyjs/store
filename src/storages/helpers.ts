@@ -1,12 +1,12 @@
 import { storageTestKey } from '../config';
 
-import type { IStorage, IEngine, IEachCallback } from '../types';
+import type { Storage, Engine, EachCallback } from '../types';
 
-export class WebStorage implements IStorage {
-  private _engine: IEngine;
+export class WebStorage implements Storage {
+  private _engine: Engine;
   private _isSupport: boolean | null = null;
 
-  constructor(engine: IEngine = 'localStorage') {
+  constructor(engine: Engine = 'localStorage') {
     this._engine = engine;
   }
 
@@ -55,7 +55,7 @@ export class WebStorage implements IStorage {
     window[this._engine].removeItem(key);
   }
 
-  each(callback: IEachCallback) {
+  each(callback: EachCallback) {
     for (let i = 0, key; i < window[this._engine].length; i++) {
       key = window[this._engine].key(i) as string;
       callback(key, this.getItem(key));

@@ -1,6 +1,5 @@
 import { describe, afterEach, expect, it } from 'vitest';
 import { Session } from './session';
-import { defaultOptions } from '../config'
 
 describe('Session', () => {
   afterEach(() => {
@@ -8,7 +7,7 @@ describe('Session', () => {
   })
 
   it('basic', () => {
-    const session = new Session(defaultOptions);
+    const session = new Session();
 
     // set
     session.setItem('foo', 'bar');

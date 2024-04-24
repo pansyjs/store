@@ -1,6 +1,6 @@
-import type { IStorage, IEachCallback } from '../types';
+import type { Storage, EachCallback } from '../types';
 
-export class Memory implements IStorage {
+export class Memory implements Storage {
   private _hash: Record<string, any> = {};
 
   check() {
@@ -22,7 +22,7 @@ export class Memory implements IStorage {
     delete this._hash[key];
   }
 
-  each(callback: IEachCallback) {
+  each(callback: EachCallback) {
     for (const key in this._hash) {
       callback?.(key, this.getItem(key));
     }

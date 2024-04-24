@@ -5,13 +5,13 @@ import { Memory } from './storages/memory';
 import { defaultOptions } from './config';
 import { isValidKey, isString, extend, toStoredValue, fromStoredValue, tryEach } from './utils';
 
-import type { IOptions, IStorage, IStorages, IStorageKey } from './types';
+import type { Options, Storage, Storages, StorageKey } from './types';
 
 export class Store {
-  private _opts: IOptions;
-  private _storages: Record<IStorageKey, IStorage>;
+  private _opts: Options;
+  private _storages: Record<StorageKey, Storage>;
 
-  constructor(opts: IOptions = {}) {
+  constructor(opts: Options = {}) {
     this._opts = extend({}, defaultOptions, opts);
     this._storages = {
       local: new Local(),
@@ -21,7 +21,7 @@ export class Store {
     };
   }
 
-  setOptions(options: IOptions) {
+  setOptions(options: Options) {
     this._opts = extend({}, this._opts, options);
   }
 
@@ -29,7 +29,7 @@ export class Store {
     return this._storages.hasOwnProperty(storage);
   }
 
-  check(storage: IStorageKey): boolean {
+  check(storage: StorageKey): boolean {
     if (this.support(storage)) {
       return this._storages[storage].check(this._opts)
     };
@@ -75,7 +75,7 @@ export class Store {
 
     tryEach(
       this._toStoragesArray(opts.storages),
-      (storage: IStorageKey) => {
+      (storage: StorageKey) => {
         this._storages[storage].setItem(key, value, options);
 
         where = storage;
@@ -92,7 +92,7 @@ export class Store {
 
     tryEach(
       this._toStoragesArray(opts.storages),
-      (storage: IStorageKey) => {
+      (storage: StorageKey) => {
         if (storage !== where) {
           this._storages[storage].removeItem(key);
         }
@@ -111,7 +111,7 @@ export class Store {
 
     tryEach(
       this._toStoragesArray(opts.storages),
-      (storage: IStorageKey) => {
+      (storage: StorageKey) => {
         this._storages[storage].removeItem(key);
       },
       null,
@@ -119,7 +119,7 @@ export class Store {
     );
   }
 
-  _toStoragesArray(storages: IStorages) {
+  _toStoragesArray(storages: Storages) {
     if (Array.isArray(storages))
       return storages;
     return isString(storages) ? [storages] : [];

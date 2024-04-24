@@ -42,7 +42,7 @@ export function isFunction(val: any) {
   return getTypeOf(val) === 'Function';
 }
 
-function each(obj, fnIterator, context) {
+function each(obj: any, fnIterator: any, context: any) {
   if (Array.isArray(obj)) {
     for (let i = 0; i < obj.length; i++)
       if (fnIterator.call(context, obj[i], i) === false) return;
@@ -52,8 +52,8 @@ function each(obj, fnIterator, context) {
   }
 }
 
-export function tryEach(obj, fnIterator, fnError, context) {
-  each(obj, function (value, key) {
+export function tryEach(obj: any, fnIterator: any, fnError: any, context: any) {
+  each(obj, function (value: any, key: number) {
     try {
       return fnIterator.call(context, value, key);
     } catch (error) {
@@ -63,5 +63,6 @@ export function tryEach(obj, fnIterator, fnError, context) {
         } catch (error) {}
       }
     }
+  // @ts-ignore
   }, this);
 }

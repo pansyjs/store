@@ -1,8 +1,8 @@
-import type { IOptions } from './types';
+import type { Options } from './types';
 
 export const storageTestKey = '__store_support_test';
 
-export const defaultOptions: IOptions = {
+export const defaultOptions: Options = {
   namespace: 'b45i1',
   storages: ['local', 'cookie', 'session', 'memory'],
   keyDelimiter: '/',

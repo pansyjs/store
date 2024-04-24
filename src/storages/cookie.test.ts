@@ -1,10 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { Cookie } from './cookie';
-import { defaultOptions } from '../config'
 
 describe('Cookie', () => {
   it('basic', () => {
-    const cookie = new Cookie(defaultOptions);
+    const cookie = new Cookie();
 
     // set
     cookie.setItem('foo', 'bar');

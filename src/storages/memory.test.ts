@@ -1,10 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import { Memory } from './memory';
-import { defaultOptions } from '../config'
 
 describe('Memory', () => {
   it('basic', () => {
-    const memory = new Memory(defaultOptions);
+    const memory = new Memory();
 
     // check
     expect(memory.check()).toBe(true);
